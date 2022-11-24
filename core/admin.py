@@ -69,3 +69,9 @@ admin.site.register(Semester)
 admin.site.register(Section, SectionAdmin)
 admin.site.register(AttendanceRecord, AttendanceRecordAdmin)
 admin.site.register(OverallStudentAttendance, OverallStudentAttendanceAdmin)
+
+
+# Customizing Django Admin Site
+admin.site.site_header = "SJCE Attendance Admin Panel"
+admin.site.site_title = "SJCE Attendance Portal"
+admin.site.index_title = "Welcome to SJCE Attendance Portal"
