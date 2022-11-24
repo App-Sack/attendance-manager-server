@@ -10,7 +10,7 @@ class TeacherAdmin(admin.ModelAdmin):
     list_display = ['teacher_id', 'name']
 
 class OverallStudentAttendanceAdmin(admin.ModelAdmin):
-    list_display = ['student', 'course', 'total_classes', 'total_present']
+    list_display = ['id', 'student', 'course', 'total_classes', 'total_present']
 
 class AttendanceRecordAdmin(admin.ModelAdmin):
     list_display = ['student', 'course', 'date', 'is_present']
