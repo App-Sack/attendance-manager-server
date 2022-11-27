@@ -82,6 +82,7 @@ class Course(models.Model):
 
 class Teacher(models.Model):
     teacher_id = models.CharField(max_length=25, primary_key=True, unique=True)
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     courses = models.ManyToManyField(Course)
     sections = models.ManyToManyField(Section)
