@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'attendance',
     'django_extensions',
     'drf_spectacular',
     'rest_framework.authtoken',
