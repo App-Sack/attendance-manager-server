@@ -43,7 +43,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ['usn', 'sr_no', 'name', 'sem', 'section']
+    list_display = ['usn', 'sr_no', 'name','section']
 
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ['teacher_id', 'name']

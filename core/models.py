@@ -95,7 +95,7 @@ class Student(models.Model):
     usn = models.CharField(max_length = 15, unique=True, primary_key=True)
     sr_no = models.CharField(max_length = 15, unique=True)
     name = models.CharField(max_length=255)
-    sem = models.OneToOneField(Semester, on_delete=models.SET_NULL, null=True)
+    sem = models.ForeignKey(Semester,on_delete=models.CASCADE,null=True)
     section = models.ForeignKey(Section, on_delete=models.SET_NULL, null=True)
     courses = models.ManyToManyField(Course)
 
