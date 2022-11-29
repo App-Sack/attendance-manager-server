@@ -13,4 +13,5 @@ router.register(r'attendanceRecord',views.AttendanceRecordView)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('add-bulk-attendance', views.add_bulk_attendance)
 ]
