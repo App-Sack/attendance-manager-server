@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from attendance.serializers import OverallAttendanceSerializer,AttendanceRecordSerializer
+from teacher.serializers import OverallAttendanceSerializer,AttendanceRecordSerializer
 from rest_framework import viewsets, authentication, permissions
 from core.models import User, Student, Course, Teacher, Semester, AttendanceRecord, OverallStudentAttendance, Section
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 import json
 
@@ -22,6 +23,8 @@ class AttendanceRecordView(viewsets.ModelViewSet):
     serializer_class = AttendanceRecordSerializer
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([authentication.TokenAuthentication])
 def add_bulk_attendance(request):
     """Data should come in this format:"""
     """ { "course":"20cs110", "students" : [
