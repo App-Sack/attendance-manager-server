@@ -1,3 +1,4 @@
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from teacher.serializers import OverallAttendanceSerializer,AttendanceRecordSerializer
 from rest_framework import viewsets, authentication, permissions
@@ -22,9 +23,11 @@ class AttendanceRecordView(viewsets.ModelViewSet):
     queryset = AttendanceRecord.objects.all()
     serializer_class = AttendanceRecordSerializer
 
+
+
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-@authentication_classes([authentication.TokenAuthentication])
+@authentication_classes([authentication.TokenAuthentication, authentication.SessionAuthentication, authentication.BasicAuthentication])
 def add_bulk_attendance(request):
     """Data should come in this format:"""
     """ { "course":"20cs110", "students" : [
@@ -38,12 +41,19 @@ def add_bulk_attendance(request):
             }
     ] } """
     try:
-        data = json.loads(request.body)
-        course = Course.objects.get(course_id=data["course"])
+        data = request.data
+        courseObject = Course.objects.get(course_id=data["course"])
         students = data["students"]
+
         for student in students:
             studentObject = Student.objects.get(usn=student["studentUsn"])
-            AttendanceRecord.objects.create(is_present= student['is_present'], course=course, student=studentObject)
+            AttendanceRecord.objects.create(is_present= student['is_present'], course=courseObject, student=studentObject)
+            overallAttendanceObject, _ = OverallStudentAttendance.objects.get_or_create(student=studentObject, course=courseObject, defaults={"total_classes":0, "total_present":0})
+            overallAttendanceObject.total_classes+=1
+            if student["is_present"]:
+                overallAttendanceObject.total_present+=1
+            overallAttendanceObject.save()
+
         return Response("Successful")
     except Exception as ex:
         return Response(ex)
