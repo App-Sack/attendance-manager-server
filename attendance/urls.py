@@ -8,6 +8,7 @@ from attendance import views
 
 router = routers.DefaultRouter()
 router.register(r'overallAttendance', views.OverallAttendanceView)
+router.register(r'attendanceRecord',views.AttendanceRecordView)
 
 
 urlpatterns = [
