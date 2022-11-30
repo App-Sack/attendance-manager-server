@@ -6,7 +6,6 @@ from core.models import User, Student, Course, Teacher, Semester, AttendanceReco
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-import json
 
 
 # Create your views here.

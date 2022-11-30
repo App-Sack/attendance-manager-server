@@ -8,4 +8,6 @@ router.register(r'',views.StudentView)
 
 urlpatterns = [
     path('',include(router.urls)),
+    path('get-student-attendance/<str:studentUsn>/', views.get_student_attendance),
+    path("get-calendar-attendance/<str:studentUsn>/<str:courseId>/", views.get_calendar_attendance)
 ]
