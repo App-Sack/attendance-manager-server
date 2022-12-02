@@ -97,6 +97,7 @@ class Student(models.Model):
     name = models.CharField(max_length=255)
     sem = models.ForeignKey(Semester,on_delete=models.CASCADE,null=True)
     section = models.ForeignKey(Section, on_delete=models.SET_NULL, null=True)
+    dob = models.CharField(max_length=50)
     courses = models.ManyToManyField(Course)
 
     def __str__(self):
