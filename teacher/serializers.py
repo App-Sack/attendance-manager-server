@@ -9,10 +9,10 @@ class OverallAttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = OverallStudentAttendance
         fields = "__all__"
-        
-class AttendanceRecordSerializer(serializers.ModelSerializer):
-    """Serializer for Attendance Record Object"""
+
+class TeacherSerializer(serializers.ModelSerializer):
+    """Serializer for Teacher Object"""
 
     class Meta:
-        model=AttendanceRecord
+        model=Teacher
         fields="__all__"

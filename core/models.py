@@ -54,6 +54,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
+    def __str__(self):
+        return self.email
+
 
 class Semester(models.Model):
     sem = models.CharField(max_length=5,choices=SEMESTER_CHOICES, unique=True, primary_key=True)
@@ -63,7 +66,7 @@ class Semester(models.Model):
 
 
 class Section(models.Model):
-    section = models.CharField(max_length=5)
+    section = models.CharField(max_length=5, primary_key= True)
     sem = models.ForeignKey(Semester, on_delete=models.CASCADE)
     courses = models.ManyToManyField('Course')
 
@@ -84,12 +87,14 @@ class Teacher(models.Model):
     teacher_id = models.CharField(max_length=25, primary_key=True, unique=True)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    courses = models.ManyToManyField(Course)
-    sections = models.ManyToManyField(Section)
 
     def __str__(self):
         return self.name
 
+class AssignedClasses(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
 
 class Student(models.Model):
     usn = models.CharField(max_length = 15, unique=True, primary_key=True)

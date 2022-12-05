@@ -4,7 +4,7 @@ Django admin customization.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import User, Student, Course, Teacher, Semester, AttendanceRecord, OverallStudentAttendance, Section
+from .models import User, Student, Course, Teacher, Semester, AttendanceRecord, OverallStudentAttendance, Section, AssignedClasses
 
 class UserAdmin(BaseUserAdmin):
     """Define the admin pages for users."""
@@ -60,12 +60,16 @@ class CourseAdmin(admin.ModelAdmin):
 class SectionAdmin(admin.ModelAdmin):
     list_display = ['section', 'sem']
 
+class AssignedClassesAdmin(admin.ModelAdmin):
+    list_display = ['teacher', 'course', 'section']
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Semester)
+admin.site.register(AssignedClasses, AssignedClassesAdmin)
 admin.site.register(Section, SectionAdmin)
 admin.site.register(AttendanceRecord, AttendanceRecordAdmin)
 admin.site.register(OverallStudentAttendance, OverallStudentAttendanceAdmin)

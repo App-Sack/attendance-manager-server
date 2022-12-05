@@ -1,8 +1,8 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from teacher.serializers import OverallAttendanceSerializer,AttendanceRecordSerializer
+from teacher.serializers import OverallAttendanceSerializer,TeacherSerializer
 from rest_framework import viewsets, authentication, permissions
-from core.models import User, Student, Course, Teacher, Semester, AttendanceRecord, OverallStudentAttendance, Section
+from core.models import User, Student, Course, Teacher, Semester, AttendanceRecord, OverallStudentAttendance, Section, AssignedClasses
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -16,11 +16,11 @@ class OverallAttendanceView(viewsets.ModelViewSet):
     queryset = OverallStudentAttendance.objects.all()
     serializer_class = OverallAttendanceSerializer
 
-class AttendanceRecordView(viewsets.ModelViewSet):
+class TeacherView(viewsets.ModelViewSet):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = AttendanceRecord.objects.all()
-    serializer_class = AttendanceRecordSerializer
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
 
 
 
@@ -56,4 +56,23 @@ def add_bulk_attendance(request):
         return Response("Successful")
     except Exception as ex:
         return Response(ex)
+
+
+
+
+@api_view(["GET"])
+def get_teacher_details(request, teacherId):
+    teacherObj = Teacher.objects.get(teacher_id = teacherId)
+    responseData = {}
+    responseData["id"]=teacherObj.teacher_id
+    responseData["name"]=teacherObj.name
+    responseData["assignedClasses"]=[]
+    assignedClassObjs = AssignedClasses.objects.filter(teacher=teacherObj)
+
+    for assignedClassObj in assignedClassObjs:
+        responseData["assignedClasses"].append({"section":assignedClassObj.section.section, "course":assignedClassObj.course.name})
+
+    return Response(responseData)
+
+
 
