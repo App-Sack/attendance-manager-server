@@ -103,7 +103,7 @@ class Student(models.Model):
     sem = models.ForeignKey(Semester,on_delete=models.CASCADE,null=True)
     section = models.ForeignKey(Section, on_delete=models.SET_NULL, null=True)
     dob = models.CharField(max_length=50)
-    courses = models.ManyToManyField(Course)
+    parent_phone_number = models.CharField(max_length=15)
 
     def __str__(self):
         return self.name

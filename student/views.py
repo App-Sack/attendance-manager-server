@@ -17,7 +17,8 @@ def get_student_attendance(request, studentUsn):
     try:
         attendance_list = []
         student = Student.objects.get(usn=studentUsn)
-        coursesStudentHasEnrolled = student.courses.all()
+        studentSection = student.section
+        coursesStudentHasEnrolled = studentSection.courses.all()
         for courseObj in coursesStudentHasEnrolled:
             attendance, created = OverallStudentAttendance.objects.get_or_create(student=student, course=courseObj, defaults={"total_classes":0, "total_present":0})
             if attendance is None:
