@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from teacher.serializers import OverallAttendanceSerializer,TeacherSerializer
 from rest_framework import viewsets, authentication, permissions
-from core.models import User, Student, Course, Teacher, Semester, AttendanceRecord, OverallStudentAttendance, Section, AssignedClasses
+from core.models import User, Student, Course, Semester, AttendanceRecord, OverallStudentAttendance, Section, AssignedClasses
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -19,7 +19,7 @@ class OverallAttendanceView(viewsets.ModelViewSet):
 class TeacherView(viewsets.ModelViewSet):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Teacher.objects.all()
+    queryset = User.objects.all()
     serializer_class = TeacherSerializer
 
 
@@ -61,10 +61,10 @@ def add_bulk_attendance(request):
 
 
 @api_view(["GET"])
-def get_teacher_details(request, teacherId):
-    teacherObj = Teacher.objects.get(teacher_id = teacherId)
+def get_teacher_details(request, teacherEmail):
+    teacherObj = User.objects.get(email=teacherEmail)
     responseData = {}
-    responseData["id"]=teacherObj.teacher_id
+    responseData["email"]=teacherObj.email
     responseData["name"]=teacherObj.name
     responseData["assignedClasses"]=[]
     assignedClassObjs = AssignedClasses.objects.filter(teacher=teacherObj)

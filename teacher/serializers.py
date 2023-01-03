@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import User, Student, Course, Teacher, Semester, AttendanceRecord, OverallStudentAttendance, Section
+from core.models import User, Student, Course, Semester, AttendanceRecord, OverallStudentAttendance, Section
 
 
 
@@ -14,5 +14,5 @@ class TeacherSerializer(serializers.ModelSerializer):
     """Serializer for Teacher Object"""
 
     class Meta:
-        model=Teacher
+        model=User
         fields="__all__"

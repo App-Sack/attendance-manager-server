@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_hod = models.BooleanField(default=False)
 
     objects = UserManager()
 
@@ -83,16 +84,8 @@ class Course(models.Model):
         return self.name
 
 
-class Teacher(models.Model):
-    teacher_id = models.CharField(max_length=25, primary_key=True, unique=True)
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
-
 class AssignedClasses(models.Model):
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
 
