@@ -127,3 +127,13 @@ class OverallStudentAttendance(models.Model):
 
     # def __str__(self):
     #     return self.student.name + " - " + self.course.name + " - " + str(self.total_classes)
+
+class Cie(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    e1 = models.SmallIntegerField(null=True, blank=True)
+    e2 = models.SmallIntegerField(null=True, blank=True)
+    e3 = models.SmallIntegerField(null=True, blank=True)
+    e4 = models.SmallIntegerField(null=True, blank=True)
+    e5 = models.SmallIntegerField(null=True, blank=True)
+
