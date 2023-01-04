@@ -70,7 +70,7 @@ def get_teacher_details(request, teacherEmail):
     assignedClassObjs = AssignedClasses.objects.filter(teacher=teacherObj)
 
     for assignedClassObj in assignedClassObjs:
-        responseData["assignedClasses"].append({"section":assignedClassObj.section.section, "course":assignedClassObj.course.name})
+        responseData["assignedClasses"].append({"section":assignedClassObj.section.section, "courseName":assignedClassObj.course.name, "courseId":assignedClassObj.course.course_id})
 
     return Response(responseData)
 
