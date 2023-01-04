@@ -2,6 +2,7 @@
 DB Models
 """
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -106,7 +107,7 @@ class AttendanceRecord(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     is_present = models.BooleanField(default=False)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.student.name  + ' '   + self.course.name
