@@ -40,7 +40,7 @@ def get_calendar_attendance(request, studentUsn, courseId):
         print(records)
         responseData = []
         for record in records:
-            responseData.append({"date":record.date, "isPresent":record.is_present})
+            responseData.append({"id":record.id,"date":record.date, "isPresent":record.is_present})
         return Response(responseData)
     except Exception as ex:
         return Response(str(ex))

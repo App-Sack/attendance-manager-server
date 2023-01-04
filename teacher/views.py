@@ -58,8 +58,6 @@ def add_bulk_attendance(request):
         return Response(ex)
 
 
-
-
 @api_view(["GET"])
 def get_teacher_details(request, teacherEmail):
     teacherObj = User.objects.get(email=teacherEmail)
