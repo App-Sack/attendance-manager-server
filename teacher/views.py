@@ -75,4 +75,21 @@ def get_teacher_details(request, teacherEmail):
     return Response(responseData)
 
 
+@api_view(["GET"])
+def get_students_in_section(request, section, courseId):
+    try:
+        sectionObj = Section.objects.get(section=section)
+        courseObj = Course.objects.get(course_id=courseId)
+        students = Student.objects.filter(section=sectionObj)
+        responseData = []
+        for student in students:
+            attendance, created = OverallStudentAttendance.objects.get_or_create(student=student, course=courseObj, defaults={"total_classes":0, "total_present":0})
+            studentAttendancePercentage = 0
+            if attendance.total_classes>0:
+                studentAttendancePercentage = round((attendance.total_present/attendance.total_classes)*100,2)
+            responseData.append({"usn":student.usn,"name":student.name,"attendance_percentage":studentAttendancePercentage})
+        return Response(responseData)
+    except Exception as ex:
+        return Response(str(ex))
+
 

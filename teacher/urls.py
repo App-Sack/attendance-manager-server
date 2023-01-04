@@ -14,5 +14,6 @@ from teacher import views
 urlpatterns = [
     # path('', include(router.urls)),
     path('add-bulk-attendance', views.add_bulk_attendance),
-    path('get-teacher-details/<str:teacherEmail>/', views.get_teacher_details)
+    path('get-teacher-details/<str:teacherEmail>/', views.get_teacher_details),
+    path("get-students-in-section/<str:section>/<str:courseId>/", views.get_students_in_section),
 ]
