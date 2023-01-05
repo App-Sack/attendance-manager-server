@@ -88,7 +88,7 @@ def get_students_in_section(request, section, courseId):
             if attendance.total_classes>0:
                 studentAttendancePercentage = round((attendance.total_present/attendance.total_classes)*100,2)
             studentsData.append({"usn":student.usn,"name":student.name,"total_classes":attendance.total_classes,"total_present":attendance.total_present,"attendance_percentage":studentAttendancePercentage})
-        responseData = {"course_id":courseId, "studentsData":studentsData}
+        responseData = {"course_id":courseId, "students_data":studentsData}
         return Response(responseData)
     except Exception as ex:
         return Response(str(ex))

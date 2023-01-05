@@ -135,6 +135,7 @@ class OverallStudentAttendance(models.Model):
 class Cie(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
     e1 = models.SmallIntegerField(null=True, blank=True)
     e2 = models.SmallIntegerField(null=True, blank=True)
     e3 = models.SmallIntegerField(null=True, blank=True)
