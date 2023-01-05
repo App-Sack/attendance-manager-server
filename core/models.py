@@ -49,8 +49,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)
     is_hod = models.BooleanField(default=False)
+    dept = models.ForeignKey("Department",on_delete=models.SET_NULL,null=True)
 
     objects = UserManager()
 
@@ -59,6 +60,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+class Department(models.Model):
+    dept_short_name = models.CharField(max_length=50,primary_key=True)
+    dept_full_name = models.CharField(max_length=255)
+    hod = models.OneToOneField(User, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.dept_short_name
 
 class Semester(models.Model):
     sem = models.CharField(max_length=5,choices=SEMESTER_CHOICES, unique=True, primary_key=True)
@@ -71,18 +79,20 @@ class Section(models.Model):
     section = models.CharField(max_length=5, primary_key= True)
     sem = models.ForeignKey(Semester, on_delete=models.CASCADE)
     courses = models.ManyToManyField('Course')
+    dept = models.ForeignKey(Department,on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
-        return self.section
+        return f"{self.section} - {self.dept}"
 
 
 class Course(models.Model):
     course_id = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=255)
     sem = models.ForeignKey(Semester,on_delete=models.CASCADE)
+    course_dept = models.ForeignKey(Department,on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
-        return self.name
+        return self.course_id
 
 
 class AssignedClasses(models.Model):
