@@ -29,7 +29,7 @@ class TeacherView(viewsets.ModelViewSet):
 @authentication_classes([authentication.TokenAuthentication, authentication.SessionAuthentication, authentication.BasicAuthentication])
 def add_bulk_attendance(request):
     """Data should come in this format:"""
-    """ { "course":"20cs110", "students" : [
+    """ { "course":"20cs110", "no_of_classes":2, "students" : [
             {
                 "is_present" : true,
                 "studentUsn" : "01jst20cs036"
@@ -43,19 +43,21 @@ def add_bulk_attendance(request):
         data = request.data
         courseObject = Course.objects.get(course_id=data["course"])
         students = data["students"]
+        no_of_classes = data["no_of_classes"]
 
-        for student in students:
-            studentObject = Student.objects.get(usn=student["studentUsn"])
-            AttendanceRecord.objects.create(is_present= student['is_present'], course=courseObject, student=studentObject)
-            overallAttendanceObject, _ = OverallStudentAttendance.objects.get_or_create(student=studentObject, course=courseObject, defaults={"total_classes":0, "total_present":0})
-            overallAttendanceObject.total_classes+=1
-            if student["is_present"]:
-                overallAttendanceObject.total_present+=1
-            overallAttendanceObject.save()
+        for i in range(no_of_classes):
+            for student in students:
+                studentObject = Student.objects.get(usn=student["studentUsn"])
+                AttendanceRecord.objects.create(is_present= student['is_present'], course=courseObject, student=studentObject)
+                overallAttendanceObject, _ = OverallStudentAttendance.objects.get_or_create(student=studentObject, course=courseObject, defaults={"total_classes":0, "total_present":0})
+                overallAttendanceObject.total_classes+=1
+                if student["is_present"]:
+                    overallAttendanceObject.total_present+=1
+                overallAttendanceObject.save()
 
         return Response("Successful")
     except Exception as ex:
-        return Response(ex)
+        return Response(str(ex))
 
 
 @api_view(["GET"])
@@ -78,14 +80,15 @@ def get_students_in_section(request, section, courseId):
     try:
         sectionObj = Section.objects.get(section=section)
         courseObj = Course.objects.get(course_id=courseId)
-        students = Student.objects.filter(section=sectionObj)
-        responseData = []
+        students = Student.objects.filter(section=sectionObj).order_by('usn')
+        studentsData = []
         for student in students:
             attendance, created = OverallStudentAttendance.objects.get_or_create(student=student, course=courseObj, defaults={"total_classes":0, "total_present":0})
             studentAttendancePercentage = 0
             if attendance.total_classes>0:
                 studentAttendancePercentage = round((attendance.total_present/attendance.total_classes)*100,2)
-            responseData.append({"usn":student.usn,"name":student.name,"attendance_percentage":studentAttendancePercentage})
+            studentsData.append({"usn":student.usn,"name":student.name,"total_classes":attendance.total_classes,"total_present":attendance.total_present,"attendance_percentage":studentAttendancePercentage})
+        responseData = {"course_id":courseId, "studentsData":studentsData}
         return Response(responseData)
     except Exception as ex:
         return Response(str(ex))
