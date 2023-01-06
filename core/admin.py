@@ -45,7 +45,12 @@ class UserAdmin(BaseUserAdmin):
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ['usn', 'sr_no', 'name','section']
+    list_display = ['usn', 'sr_no', 'name','section', 'parent_phone_number']
+    search_fields = ['usn', 'sr_no', 'name']
+    list_filter = (
+        ('section', admin.RelatedOnlyFieldListFilter),
+        ('section__dept', admin.RelatedOnlyFieldListFilter),
+    )
 
 class OverallStudentAttendanceAdmin(admin.ModelAdmin):
     list_display = ['id', 'student', 'course', 'total_classes', 'total_present']
@@ -55,6 +60,10 @@ class AttendanceRecordAdmin(admin.ModelAdmin):
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['course_id', 'name', 'sem']
+    list_filter = (
+        ('course_dept', admin.RelatedOnlyFieldListFilter),
+        ('sem', admin.RelatedOnlyFieldListFilter),
+    )
 
 class SectionAdmin(admin.ModelAdmin):
     list_display = ['section', 'sem', 'dept']
