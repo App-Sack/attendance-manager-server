@@ -93,6 +93,7 @@ def get_students_in_section(request, section, courseId):
     except Exception as ex:
         return Response(str(ex))
 
+
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 @authentication_classes([authentication.TokenAuthentication, authentication.SessionAuthentication, authentication.BasicAuthentication])
@@ -109,7 +110,16 @@ def reset_attendance_on_date(request):
         studentObj = Student.objects.get(usn=data["usn"])
         date = data["date"]
 
-        AttendanceRecord.objects.filter(student=studentObj, course=courseObj, date__icontains=date).delete()
+        overallAttendance = OverallStudentAttendance.objects.get(student=studentObj, course=courseObj)
+        attendanceRecords = AttendanceRecord.objects.filter(student=studentObj, course=courseObj, date__icontains=date).all()
+
+        for record in attendanceRecords:
+            overallAttendance.total_classes-=1
+            if record.is_present==True:
+                overallAttendance.total_present-=1
+
+        overallAttendance.save()
+        attendanceRecords.delete()
 
         return Response("Successful")
     except Exception as ex:
