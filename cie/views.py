@@ -11,7 +11,7 @@ from rest_framework.response import Response
 
 
 @api_view(["GET"])
-def get_students_in_section(request, section, courseId):
+def get_students_in_section_cie(request, section, courseId):
     try:
         sectionObj = Section.objects.get(section=section)
         courseObj = Course.objects.get(course_id=courseId)
@@ -25,5 +25,38 @@ def get_students_in_section(request, section, courseId):
 
         responseData = {"course_id":courseId, "students_data":studentsData}
         return Response(responseData)
+    except Exception as ex:
+        return Response(str(ex))
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([authentication.TokenAuthentication, authentication.SessionAuthentication, authentication.BasicAuthentication])
+def update_student_cie(request):
+    """Data should come in this format:
+    {
+        "usn":"01jst20cs036",
+        "course_id":"20cs552",
+        "e1":23,
+        "e2":23,
+        "e3":23,
+        "e4":23,
+        "e5":23
+    } """
+    try:
+        data = request.data
+        student = Student.objects.get(usn=data["usn"])
+        course = Course.objects.get(course_id=data["course_id"])
+
+        cieRecord, created = Cie.objects.get_or_create(student=student,course=course,section=student.section)
+        cieRecord.e1 = data["e1"]
+        cieRecord.e2 = data["e2"]
+        cieRecord.e3 = data["e3"]
+        cieRecord.e4 = data["e4"]
+        cieRecord.e5 = data["e5"]
+
+        cieRecord.save()
+
+        return Response("Successful")
     except Exception as ex:
         return Response(str(ex))

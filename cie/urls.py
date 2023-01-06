@@ -5,6 +5,6 @@ from cie import views
 
 
 urlpatterns = [
-    path("get-students-in-section-cie/<str:section>/<str:courseId>/", views.get_students_in_section),
+    path("get-students-in-section-cie/<str:section>/<str:courseId>/", views.get_students_in_section_cie),
+    path("update-student-cie/", views.update_student_cie),
 ]
-    

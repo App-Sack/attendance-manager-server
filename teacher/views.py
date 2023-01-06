@@ -28,8 +28,8 @@ class TeacherView(viewsets.ModelViewSet):
 @permission_classes([IsAuthenticated])
 @authentication_classes([authentication.TokenAuthentication, authentication.SessionAuthentication, authentication.BasicAuthentication])
 def add_bulk_attendance(request):
-    """Data should come in this format:"""
-    """ { "course":"20cs110", "no_of_classes":2, "students" : [
+    """Data should come in this format:
+    { "course":"20cs110", "no_of_classes":2, "students" : [
             {
                 "is_present" : true,
                 "studentUsn" : "01jst20cs036"
