@@ -126,4 +126,37 @@ def reset_attendance_on_date(request):
         return Response(str(ex))
 
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([authentication.TokenAuthentication, authentication.SessionAuthentication, authentication.BasicAuthentication])
+def add_single_attendance_on_date(request):
+    """
+    Sample post data
+    Send date in this format - (YYYY-MM-DD)
+    {
+        "usn":"01jst20cs036",
+        "course_id":"20cs510",
+        "date":"2023-01-06",
+        "is_present":true
+    }
+    """
+    try:
+        data = request.data
+        studentObj = Student.objects.get(usn=data["usn"])
+        courseObj = Course.objects.get(course_id=data["course_id"])
+        date = data["date"]
+        is_present = data["is_present"]
 
+        AttendanceRecord(student=studentObj,course=courseObj, date=date, is_present=is_present).save()
+
+        overallAttendance = OverallStudentAttendance.objects.get(student=studentObj, course=courseObj)
+        overallAttendance.total_classes+=1
+
+        if is_present==True:
+            overallAttendance.total_present+=1
+
+        overallAttendance.save()
+
+        return Response("Successful")
+    except Exception as ex:
+        return Response(str(ex))

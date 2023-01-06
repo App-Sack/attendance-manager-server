@@ -15,6 +15,7 @@ urlpatterns = [
     # path('', include(router.urls)),
     path('add-bulk-attendance', views.add_bulk_attendance),
     path('reset-attendance-on-date', views.reset_attendance_on_date),
+    path('add-single-attendance-on-date', views.add_single_attendance_on_date),
     path('get-teacher-details/<str:teacherEmail>/', views.get_teacher_details),
     path("get-students-in-section/<str:section>/<str:courseId>/", views.get_students_in_section),
 ]
