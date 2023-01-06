@@ -93,4 +93,27 @@ def get_students_in_section(request, section, courseId):
     except Exception as ex:
         return Response(str(ex))
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([authentication.TokenAuthentication, authentication.SessionAuthentication, authentication.BasicAuthentication])
+def reset_attendance_on_date(request):
+    """Data should come in this format:
+    {
+        "course_id":"20cs510",
+        "usn":"01jst20cs036",
+        "date": "2023-01-06"
+    } """
+    try:
+        data = request.data
+        courseObj = Course.objects.get(course_id=data["course_id"])
+        studentObj = Student.objects.get(usn=data["usn"])
+        date = data["date"]
+
+        AttendanceRecord.objects.filter(student=studentObj, course=courseObj, date__icontains=date).delete()
+
+        return Response("Successful")
+    except Exception as ex:
+        return Response(str(ex))
+
+
 
