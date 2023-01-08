@@ -60,3 +60,28 @@ def update_student_cie(request):
         return Response("Successful")
     except Exception as ex:
         return Response(str(ex))
+
+
+@api_view(["GET"])
+def get_student_all_courses_cie(request, usn):
+    try:
+        studentObj = Student.objects.get(usn=usn)
+        courses = studentObj.section.courses.all()
+
+        cieData = []
+
+        for courseObj in courses:
+            cie, created = Cie.objects.get_or_create(student=studentObj, course=courseObj, section=studentObj.section)
+            cieData.append({
+                "course_id":courseObj.course_id,
+                "e1":cie.e1,
+                "e2":cie.e2,
+                "e3":cie.e3,
+                "e4":cie.e4,
+                "e5":cie.e5
+            })
+        responseData = {"usn":usn, "cie_data":cieData}
+
+        return Response(responseData)
+    except Exception as ex:
+        return Response(str(ex))
