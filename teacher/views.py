@@ -144,7 +144,7 @@ def add_single_attendance_on_date(request):
         data = request.data
         studentObj = Student.objects.get(usn=data["usn"])
         courseObj = Course.objects.get(course_id=data["course_id"])
-        date = f"{data['date']} 01:00:00"
+        date = data['date']
         is_present = data["is_present"]
 
         AttendanceRecord(student=studentObj,course=courseObj, date=date, is_present=is_present).save()
