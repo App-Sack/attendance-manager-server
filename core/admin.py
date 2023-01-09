@@ -53,7 +53,14 @@ class StudentAdmin(admin.ModelAdmin):
     )
 
 class OverallStudentAttendanceAdmin(admin.ModelAdmin):
-    list_display = ['id', 'student', 'course', 'total_classes', 'total_present']
+    list_display = ['id', 'student', 'course', 'total_classes', 'total_present', 'attendance_percentage']
+    list_filter = (
+        ('course', admin.RelatedOnlyFieldListFilter),
+        ('student__section', admin.RelatedOnlyFieldListFilter),
+    )
+
+    def attendance_percentage(self, obj):
+        return round((obj.total_present/obj.total_classes)*100,2) if obj.total_classes!=0 else None
 
 class AttendanceRecordAdmin(admin.ModelAdmin):
     list_display = ['student', 'course', 'date', 'is_present']
