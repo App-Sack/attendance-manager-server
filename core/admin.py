@@ -9,10 +9,10 @@ from .models import User, Student, Department, Course, Semester, AttendanceRecor
 class UserAdmin(BaseUserAdmin):
     """Define the admin pages for users."""
     ordering = ['id']
-    list_display = ['email', 'name', 'is_staff', 'is_hod']
+    list_display = ['email', 'name', 'dept', 'is_staff', 'is_hod']
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal Info'), {'fields': ('name',)}),
+        (_('Personal Info'), {'fields': ('name','dept')}),
         (
             _('Permissions'),
             {
@@ -42,6 +42,8 @@ class UserAdmin(BaseUserAdmin):
             ),
         }),
     )
+
+
 
 
 class StudentAdmin(admin.ModelAdmin):
