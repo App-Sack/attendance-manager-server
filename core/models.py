@@ -60,6 +60,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    class Meta:
+        verbose_name = 'Staff'
+
 class Department(models.Model):
     dept_short_name = models.CharField(max_length=50,primary_key=True)
     dept_full_name = models.CharField(max_length=255)
