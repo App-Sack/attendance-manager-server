@@ -147,7 +147,8 @@ def add_single_attendance_on_date(request):
         date = data['date']
         is_present = data["is_present"]
 
-        AttendanceRecord(student=studentObj,course=courseObj, date=date, is_present=is_present).save()
+        newRecord = AttendanceRecord(student=studentObj,course=courseObj, date=date, is_present=is_present)
+        newRecord.save()
 
         overallAttendance = OverallStudentAttendance.objects.get(student=studentObj, course=courseObj)
         overallAttendance.total_classes+=1
@@ -157,6 +158,9 @@ def add_single_attendance_on_date(request):
 
         overallAttendance.save()
 
-        return Response("Successful")
+        return Response({
+            "status":"Successful",
+            "id": newRecord.id
+        })
     except Exception as ex:
         return Response(str(ex))
