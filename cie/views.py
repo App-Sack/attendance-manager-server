@@ -39,9 +39,7 @@ def update_student_cie(request):
         "course_id":"20cs552",
         "e1":23,
         "e2":23,
-        "e3":23,
-        "e4":23,
-        "e5":23
+        "e3":23
     } """
     try:
         data = request.data
@@ -52,8 +50,6 @@ def update_student_cie(request):
         cieRecord.e1 = data["e1"]
         cieRecord.e2 = data["e2"]
         cieRecord.e3 = data["e3"]
-        cieRecord.e4 = data["e4"]
-        cieRecord.e5 = data["e5"]
 
         cieRecord.save()
 
@@ -76,9 +72,7 @@ def get_student_all_courses_cie(request, usn):
                 "course_id":courseObj.course_id,
                 "e1":cie.e1,
                 "e2":cie.e2,
-                "e3":cie.e3,
-                "e4":cie.e4,
-                "e5":cie.e5
+                "e3":cie.e3
             })
         responseData = {"usn":usn, "cie_data":cieData}
 
