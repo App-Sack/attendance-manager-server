@@ -82,7 +82,7 @@ class AssignedClassesAdmin(admin.ModelAdmin):
     list_display = ['teacher', 'course', 'section']
 
 class CieAdmin(admin.ModelAdmin):
-    list_display = ['student', 'section', 'course', 'e1', 'e2', 'e3', 'e4', 'e5']
+    list_display = ['student', 'section', 'course', 'e1', 'e2', 'e3',]
     list_filter = (
         ('course', admin.RelatedOnlyFieldListFilter),
         ('section', admin.RelatedOnlyFieldListFilter),

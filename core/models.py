@@ -142,6 +142,4 @@ class Cie(models.Model):
     e1 = models.SmallIntegerField(null=True, blank=True)
     e2 = models.SmallIntegerField(null=True, blank=True)
     e3 = models.SmallIntegerField(null=True, blank=True)
-    e4 = models.SmallIntegerField(null=True, blank=True)
-    e5 = models.SmallIntegerField(null=True, blank=True)
 
